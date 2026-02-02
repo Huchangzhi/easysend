@@ -31,6 +31,7 @@ import 'package:localsend_app/provider/purchase_provider.dart';
 // [FOSS_REMOVE_END]
 import 'package:localsend_app/provider/selection/selected_sending_files_provider.dart';
 import 'package:localsend_app/provider/settings_provider.dart';
+import 'package:localsend_app/provider/easytier_integration_provider.dart';
 import 'package:localsend_app/provider/tv_provider.dart';
 import 'package:localsend_app/provider/window_dimensions_provider.dart';
 import 'package:localsend_app/rust/api/logging.dart' as rust_logging;
@@ -226,6 +227,11 @@ Future<void> postInit(BuildContext context, Ref ref, bool appStart) async {
   }
 
   ref.redux(signalingProvider).dispatch(SetupSignalingConnection());
+
+  // Initialize EasyTier integration
+  final easyTierIntegrationService = ref.read(easyTierIntegrationProvider.notifier);
+  final settings = ref.read(settingsProvider);
+  await easyTierIntegrationService.startIntegration(settings);
 
   if (appStart) {
     if (defaultTargetPlatform == TargetPlatform.macOS) {

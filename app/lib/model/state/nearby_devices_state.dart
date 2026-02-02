@@ -14,16 +14,21 @@ class NearbyDevicesState with NearbyDevicesStateMappable {
   /// We do not trust the fingerprint, so we allow multiple devices with the same fingerprint.
   final Map<String, Set<Device>> signalingDevices;
 
+  /// Devices that are discovered via EasyTier network
+  final Map<String, Device> easyTierDevices;
+
   const NearbyDevicesState({
     required this.runningFavoriteScan,
     required this.runningIps,
     required this.devices,
     required this.signalingDevices,
+    this.easyTierDevices = const {},
   });
 
   Map<String, Device> get allDevices {
     final Map<String, Device> allDevices = {};
     allDevices.addAll(devices);
+    allDevices.addAll(easyTierDevices);
     for (final devices in signalingDevices.values) {
       for (final device in devices) {
         final currentDevice = allDevices[device.fingerprint];

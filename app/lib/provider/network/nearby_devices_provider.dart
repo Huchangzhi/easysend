@@ -94,6 +94,54 @@ class RegisterDeviceAction extends AsyncReduxAction<NearbyDevicesService, Nearby
   }
 }
 
+/// Registers an EasyTier device in the state.
+/// It will override any existing EasyTier device with the same IP.
+class RegisterEasyTierDeviceAction extends ReduxAction<NearbyDevicesService, NearbyDevicesState> {
+  final Device device;
+
+  RegisterEasyTierDeviceAction(this.device);
+
+  @override
+  NearbyDevicesState reduce() {
+    assert(device.ip?.isNotEmpty ?? false, 'IP must not be empty');
+
+    return state.copyWith(
+      easyTierDevices: {...state.easyTierDevices}..update(device.ip!, (_) => device, ifAbsent: () => device),
+    );
+  }
+}
+
+/// Registers multiple EasyTier devices in the state.
+class RegisterEasyTierDevicesAction extends ReduxAction<NearbyDevicesService, NearbyDevicesState> {
+  final List<Device> devices;
+
+  RegisterEasyTierDevicesAction(this.devices);
+
+  @override
+  NearbyDevicesState reduce() {
+    final updatedEasyTierDevices = {...state.easyTierDevices};
+
+    for (final device in devices) {
+      assert(device.ip?.isNotEmpty ?? false, 'IP must not be empty');
+      updatedEasyTierDevices.update(device.ip!, (_) => device, ifAbsent: () => device);
+    }
+
+    return state.copyWith(
+      easyTierDevices: updatedEasyTierDevices,
+    );
+  }
+}
+
+/// Clears all EasyTier devices from the state.
+class ClearEasyTierDevicesAction extends ReduxAction<NearbyDevicesService, NearbyDevicesState> {
+  @override
+  NearbyDevicesState reduce() {
+    return state.copyWith(
+      easyTierDevices: {},
+    );
+  }
+}
+
 /// Registers a new device found via signaling.
 class RegisterSignalingDeviceAction extends ReduxAction<NearbyDevicesService, NearbyDevicesState> {
   final Device device;

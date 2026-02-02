@@ -21,6 +21,16 @@ final settingsProvider = NotifierProvider<SettingsService, SettingsState>(
         _listEq(syncState.networkBlacklist, next.networkBlacklist) &&
         syncState.multicastGroup == next.multicastGroup &&
         syncState.discoveryTimeout == next.discoveryTimeout) {
+      // Check if EasyTier settings have changed
+      final prev = ref.read(settingsProvider);
+      if (prev.enableEasyTier != next.enableEasyTier ||
+          prev.easyTierNetworkName != next.easyTierNetworkName ||
+          prev.easyTierNetworkSecret != next.easyTierNetworkSecret ||
+          prev.easyTierPublicServerUrl != next.easyTierPublicServerUrl) {
+        // EasyTier settings changed, restart integration
+        final easyTierIntegrationService = ref.read(easyTierIntegrationProvider.notifier);
+        easyTierIntegrationService.startIntegration(next);
+      }
       return;
     }
 
@@ -34,6 +44,17 @@ final settingsProvider = NotifierProvider<SettingsService, SettingsState>(
             discoveryTimeout: next.discoveryTimeout,
           ),
         );
+
+    // Also check EasyTier settings after syncing other settings
+    final prev = ref.read(settingsProvider);
+    if (prev.enableEasyTier != next.enableEasyTier ||
+        prev.easyTierNetworkName != next.easyTierNetworkName ||
+        prev.easyTierNetworkSecret != next.easyTierNetworkSecret ||
+        prev.easyTierPublicServerUrl != next.easyTierPublicServerUrl) {
+      // EasyTier settings changed, restart integration
+      final easyTierIntegrationService = ref.read(easyTierIntegrationProvider.notifier);
+      easyTierIntegrationService.startIntegration(next);
+    }
   },
 );
 
@@ -70,6 +91,12 @@ class SettingsService extends PureNotifier<SettingsState> {
     shareViaLinkAutoAccept: _persistence.getShareViaLinkAutoAccept(),
     discoveryTimeout: _persistence.getDiscoveryTimeout(),
     advancedSettings: _persistence.getAdvancedSettingsEnabled(),
+
+    // EasyTier integration
+    enableEasyTier: _persistence.getEnableEasyTier(),
+    easyTierNetworkName: _persistence.getEasyTierNetworkName(),
+    easyTierNetworkSecret: _persistence.getEasyTierNetworkSecret(),
+    easyTierPublicServerUrl: _persistence.getEasyTierPublicServerUrl(),
   );
 
   Future<void> setAlias(String alias) async {
@@ -245,6 +272,31 @@ class SettingsService extends PureNotifier<SettingsState> {
 
     state = state.copyWith(
       shareViaLinkAutoAccept: shareViaLinkAutoAccept,
+    );
+  }
+
+  // EasyTier integration methods
+  Future<void> setEnableEasyTier(bool enable) async {
+    state = state.copyWith(
+      enableEasyTier: enable,
+    );
+  }
+
+  Future<void> setEasyTierNetworkName(String name) async {
+    state = state.copyWith(
+      easyTierNetworkName: name,
+    );
+  }
+
+  Future<void> setEasyTierNetworkSecret(String secret) async {
+    state = state.copyWith(
+      easyTierNetworkSecret: secret,
+    );
+  }
+
+  Future<void> setEasyTierPublicServerUrl(String url) async {
+    state = state.copyWith(
+      easyTierPublicServerUrl: url,
     );
   }
 }

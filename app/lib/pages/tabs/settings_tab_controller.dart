@@ -121,6 +121,20 @@ class SettingsTabController extends ReduxNotifier<SettingsTabVm> {
           redux.dispatch(_SetShowInContextMenuAction(!state.showInContextMenu));
         }
       },
+
+      // EasyTier integration methods
+      onChangeEasyTierEnabled: (enabled) async {
+        await _settingsService.setEnableEasyTier(enabled);
+      },
+      onChangeEasyTierNetworkName: (name) async {
+        await _settingsService.setEasyTierNetworkName(name);
+      },
+      onChangeEasyTierNetworkSecret: (secret) async {
+        await _settingsService.setEasyTierNetworkSecret(secret);
+      },
+      onChangeEasyTierPublicServerUrl: (url) async {
+        await _settingsService.setEasyTierPublicServerUrl(url);
+      },
       onTapRestartServer: (context) async {
         try {
           final newServerState = await _serverService.restartServer(
@@ -153,6 +167,25 @@ class SettingsTabController extends ReduxNotifier<SettingsTabVm> {
       },
       onTapStopServer: () async => await _serverService.stopServer(),
       onTapAdvanced: (advanced) => redux.dispatch(SetAdvancedAction(advanced)),
+
+      // EasyTier integration
+      easyTierNetworkNameController: TextEditingController(text: _settingsService.state.easyTierNetworkName),
+      easyTierNetworkSecretController: TextEditingController(text: _settingsService.state.easyTierNetworkSecret),
+      easyTierPublicServerUrlController: TextEditingController(text: _settingsService.state.easyTierPublicServerUrl),
+
+      // EasyTier callbacks
+      onChangeEasyTierEnabled: (enabled) async {
+        await _settingsService.setEnableEasyTier(enabled);
+      },
+      onChangeEasyTierNetworkName: (name) async {
+        await _settingsService.setEasyTierNetworkName(name);
+      },
+      onChangeEasyTierNetworkSecret: (secret) async {
+        await _settingsService.setEasyTierNetworkSecret(secret);
+      },
+      onChangeEasyTierPublicServerUrl: (url) async {
+        await _settingsService.setEasyTierPublicServerUrl(url);
+      },
     );
   }
 
@@ -166,6 +199,12 @@ class SettingsTabController extends ReduxNotifier<SettingsTabVm> {
     state.portController.dispose();
     state.timeoutController.dispose();
     state.multicastController.dispose();
+
+    // EasyTier controllers
+    state.easyTierNetworkNameController.dispose();
+    state.easyTierNetworkSecretController.dispose();
+    state.easyTierPublicServerUrlController.dispose();
+
     super.dispose();
   }
 }

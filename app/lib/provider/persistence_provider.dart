@@ -91,6 +91,12 @@ const _deviceModel = 'ls_device_model';
 const _shareViaLinkAutoAccept = 'ls_share_via_link_auto_accept';
 const _advancedSettingsKey = 'ls_advanced_settings';
 
+// EasyTier settings
+const _enableEasyTier = 'ls_enable_easytier';
+const _easyTierNetworkName = 'ls_easytier_network_name';
+const _easyTierNetworkSecret = 'ls_easytier_network_secret';
+const _easyTierPublicServerUrl = 'ls_easytier_public_server_url';
+
 final persistenceProvider = Provider<PersistenceService>((ref) {
   throw Exception('persistenceProvider not initialized');
 });
@@ -544,6 +550,39 @@ class PersistenceService {
 
   Future<void> setDeviceModel(String deviceModel) async {
     await _prefs.setString(_deviceModel, deviceModel);
+  }
+
+  // EasyTier settings methods
+  bool getEnableEasyTier() {
+    return _prefs.getBool(_enableEasyTier) ?? false;
+  }
+
+  Future<void> setEnableEasyTier(bool enable) async {
+    await _prefs.setBool(_enableEasyTier, enable);
+  }
+
+  String getEasyTierNetworkName() {
+    return _prefs.getString(_easyTierNetworkName) ?? '';
+  }
+
+  Future<void> setEasyTierNetworkName(String name) async {
+    await _prefs.setString(_easyTierNetworkName, name);
+  }
+
+  String getEasyTierNetworkSecret() {
+    return _prefs.getString(_easyTierNetworkSecret) ?? '';
+  }
+
+  Future<void> setEasyTierNetworkSecret(String secret) async {
+    await _prefs.setString(_easyTierNetworkSecret, secret);
+  }
+
+  String getEasyTierPublicServerUrl() {
+    return _prefs.getString(_easyTierPublicServerUrl) ?? 'tcp://public.easytier.cn:11010';
+  }
+
+  Future<void> setEasyTierPublicServerUrl(String url) async {
+    await _prefs.setString(_easyTierPublicServerUrl, url);
   }
 
   Future<void> clear() async {

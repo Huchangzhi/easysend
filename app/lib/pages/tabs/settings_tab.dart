@@ -489,6 +489,50 @@ class SettingsTab extends StatelessWidget {
                     ],
                   ),
                   _SettingsSection(
+                    title: 'EasyTier',
+                    children: [
+                      _BooleanEntry(
+                        label: 'Enable EasyTier',
+                        value: vm.settings.enableEasyTier,
+                        onChanged: (b) async {
+                          await vm.onChangeEasyTierEnabled(b);
+                        },
+                      ),
+                      if (vm.settings.enableEasyTier) ...[
+                        _SettingsEntry(
+                          label: 'Network Name',
+                          child: TextFieldTv(
+                            name: 'Network Name',
+                            controller: vm.easyTierNetworkNameController,
+                            onChanged: (s) async {
+                              await vm.onChangeEasyTierNetworkName(s);
+                            },
+                          ),
+                        ),
+                        _SettingsEntry(
+                          label: 'Network Secret',
+                          child: TextFieldTv(
+                            name: 'Network Secret',
+                            controller: vm.easyTierNetworkSecretController,
+                            onChanged: (s) async {
+                              await vm.onChangeEasyTierNetworkSecret(s);
+                            },
+                          ),
+                        ),
+                        _SettingsEntry(
+                          label: 'Public Server URL',
+                          child: TextFieldTv(
+                            name: 'Public Server URL',
+                            controller: vm.easyTierPublicServerUrlController,
+                            onChanged: (s) async {
+                              await vm.onChangeEasyTierPublicServerUrl(s);
+                            },
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  _SettingsSection(
                     title: t.settingsTab.other.title,
                     padding: const EdgeInsets.only(bottom: 0),
                     children: [

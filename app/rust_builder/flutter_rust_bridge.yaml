@@ -1,0 +1,5 @@
+name: RustLib
+rust_input:
+  - path: "../rust/src/api/**/*.rs"
+    pattern: "pub fn .*"
+dart_output: "lib/rust/api"

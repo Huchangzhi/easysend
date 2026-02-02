@@ -35,6 +35,17 @@ class SettingsTabVm with SettingsTabVmMappable {
   final void Function() onTapStopServer;
   final void Function(bool advanced) onTapAdvanced;
 
+  // EasyTier integration
+  final TextEditingController easyTierNetworkNameController;
+  final TextEditingController easyTierNetworkSecretController;
+  final TextEditingController easyTierPublicServerUrlController;
+
+  // EasyTier callbacks
+  final void Function(bool enabled) onChangeEasyTierEnabled;
+  final void Function(String name) onChangeEasyTierNetworkName;
+  final void Function(String secret) onChangeEasyTierNetworkSecret;
+  final void Function(String url) onChangeEasyTierPublicServerUrl;
+
   SettingsTabVm({
     required this.advanced,
     required this.aliasController,
@@ -59,5 +70,16 @@ class SettingsTabVm with SettingsTabVmMappable {
     required this.onTapStartServer,
     required this.onTapStopServer,
     required this.onTapAdvanced,
+
+    // EasyTier integration
+    required this.easyTierNetworkNameController,
+    required this.easyTierNetworkSecretController,
+    required this.easyTierPublicServerUrlController,
+
+    // EasyTier callbacks
+    required this.onChangeEasyTierEnabled,
+    required this.onChangeEasyTierNetworkName,
+    required this.onChangeEasyTierNetworkSecret,
+    required this.onChangeEasyTierPublicServerUrl,
   });
 }

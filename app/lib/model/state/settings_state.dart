@@ -36,6 +36,12 @@ class SettingsState with SettingsStateMappable {
   final int discoveryTimeout;
   final bool advancedSettings;
 
+  // EasyTier integration
+  final bool enableEasyTier;
+  final String easyTierNetworkName;
+  final String easyTierNetworkSecret;
+  final String easyTierPublicServerUrl;
+
   const SettingsState({
     required this.showToken,
     required this.alias,
@@ -63,5 +69,11 @@ class SettingsState with SettingsStateMappable {
     required this.shareViaLinkAutoAccept,
     required this.discoveryTimeout,
     required this.advancedSettings,
+
+    // EasyTier integration
+    this.enableEasyTier = false,
+    this.easyTierNetworkName = '',
+    this.easyTierNetworkSecret = '',
+    this.easyTierPublicServerUrl = 'tcp://public.easytier.cn:11010',
   });
 }
