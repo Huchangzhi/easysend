@@ -11,9 +11,9 @@ anyhow = "1.0.95"
 bytes = "1.9.0"
 flutter_rust_bridge = { version = "=2.11.1", features = ["uuid"] }
 localsend = { path = "../../core", features = ["full"] }
-tokio = { version = "1.43.0", features = ["full"] }
+tokio = { workspace = true }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19" }
 uuid = { version = "1.11.1", features = ["v4"] }
 once_cell = "1.20.2"
-easytier = { path = "../../../easytier/easytier" }
+easytier = { path = "../../../easytier/easytier", features = ["full"] }

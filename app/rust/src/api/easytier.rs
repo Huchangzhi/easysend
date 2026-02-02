@@ -2,7 +2,8 @@ use anyhow::Result;
 use flutter_rust_bridge::frb;
 use tokio::sync::Mutex;
 use std::sync::Arc;
-use easytier::{launcher::{NetworkInstance, NetworkConfig, NetworkingMethod}, common::config::TomlConfigLoader};
+use easytier::launcher::{NetworkInstance, NetworkConfig, NetworkingMethod};
+use easytier::common::config::TomlConfigLoader;
 
 pub struct EasyTierNetworkConfig {
     pub network_name: String,
